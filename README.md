@@ -1,6 +1,6 @@
-# DL-based clinical-dose CBCT reconstruction
+# DL-based Clinical Dose CBCT Reconstruction
 
-The codes for the clinical-dose CBCT reconstruction task in the ICASSP-2024 3D-CBCT Challenge. 
+The codes for the clinical dose CBCT reconstruction task in the ICASSP-2024 3D-CBCT Challenge. 
 Our team's name is BJTU_PKUCH.
 
 ## 1. Download pre-trained image domain (ID) model
