@@ -62,10 +62,8 @@ pip install .
 
 ## 4. Test
 
-- To perform the DL-based clinical-dose CBCT reconstruction for the test dataset, use the following command. Here, `test_path` should be the absolute path to the test dataset folder, and `gpu` should specify the GPU number to be used (only one GPU is required).
-
-```bash
-python test.py --test_path=[absolute_path_to_test_dataset] --gpu=[single_GPU_number]
-```
-
-- Upon completion of the program, the reconstructed 3D images of the test dataset, each being a volume of size 256 x 256 x 256, will be stored in the `reconstruction_output` folder. These files will be named following the format `{patient ID}_clinical_dose_recon.npy`.
+- To perform the DL-based clinical dose CBCT reconstruction for the test dataset, please use the `test.py` script.  
+- In the script, specify the GPU number to be used (only one GPU is required) in line 10: `os.environ['CUDA_VISIBLE_DEVICES']`.
+- In the script, replace line 16, `folder = "test/folder/in/organizers/path"`, with the absolute path to the test dataset folder.
+- In the script, the variable `reconstruction` represents the reconstruction results obtained from the clinical dose sinogram using the DL-based algorithm.
+- In the script, the variable `target_reconstruction` is used as the ground truth.

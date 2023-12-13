@@ -1,32 +1,27 @@
-import os
-import glob
+# %% Challenge imports
+import torch
 import numpy as np
-import argparse
+# %% my imports
+import os
 from DL_based_CBCT_reconstruction import DL_based_CBCT_reconstruction
+from Data_path_loader import Data_path_loader
 
+# Please specify the GPU number to be used (only one GPU is required)
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-def test_algorithm(args):
-    # Specify GPU number; The program requires only one GPU to run
-    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+# Initialize deep learning algorithm
+Algorithm = DL_based_CBCT_reconstruction()
 
-    # Initialize deep learning algorithm
-    Algorithm = DL_based_CBCT_reconstruction()
+# %% Load data
+folder = "test/folder/in/organizers/path"  # Please replace with the absolute path to the test dataset folder
 
-    # Algorithm inference & result saving
-    os.makedirs('./reconstruction_output', exist_ok=True)
-    proj_file_path_list = glob.glob(os.path.join(args.test_path, '*_sino_clinical_dose.npy'))
-    for i, proj_file_path in enumerate(proj_file_path_list):
-        print(i, proj_file_path)
-        clinical_dose_proj = np.load(proj_file_path, allow_pickle=True)
-        reconstructed_image = Algorithm.process(clinical_dose_proj)
-        np.save('./reconstruction_output/%s_clinical_dose_recon.npy' % os.path.basename(proj_file_path)[:4],
-                reconstructed_image)
+# %% my loading loop
+data_path = Data_path_loader(folder, data_type='clinical_dose')
 
-
-if __name__ == '__main__':
-    parse = argparse.ArgumentParser()
-    parse.add_argument('--test_path', type=str)
-    parse.add_argument('--gpu', type=str, default='0')
-    args = parse.parse_args()
-
-    test_algorithm(args)
+for i, (sinogram_path, target_reconstruction_path) in enumerate(data_path):
+    print(i)
+    # load clinical dose sinogram & Algorithm reconstruction
+    sinogram = np.load(sinogram_path, allow_pickle=True)
+    reconstruction = Algorithm.process(sinogram)
+    # load GT clean FDK image
+    target_reconstruction = np.load(target_reconstruction_path, allow_pickle=True)
